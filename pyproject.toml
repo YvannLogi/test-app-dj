@@ -1,0 +1,30 @@
+[project]
+name = "wspace"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "YvannLogi", email = "yvanndavid03@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "django-forge-cli",
+    "pillow>=12.3.0",
+]
+
+[project.scripts]
+wspace = "wspace:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+django-forge-cli = { git = "https://github.com/Davidwgit82/django-forge-cli.git", branch = "fix/root-urlconf-url-wiring" }
+
+[dependency-groups]
+dev = [
+    "black>=26.10.0",
+    "django-browser-reload>=1.21.0",
+    "django-debug-toolbar>=8.0.0",
+]

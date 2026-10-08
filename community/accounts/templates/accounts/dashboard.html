@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- En-tête du tableau de bord -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Tableau de bord Rabbin</h1>
+        <p class="mt-1 text-sm text-gray-600">Bienvenue sur votre espace de gestion, <span class="font-semibold text-indigo-600">{{ request.user.full_name }}</span>.</p>
+    </div>
+
+    {% if rabbi_temple %}
+        <!-- Section Communauté / Temple -->
+        <div class="bg-white shadow rounded-lg p-6 mb-8 border border-gray-100">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <span class="px-3 py-1 text-xs font-semibold text-indigo-800 bg-indigo-100 rounded-full">Votre Communauté</span>
+                    <h2 class="text-2xl font-bold text-gray-900 mt-2">{{ rabbi_temple.name }}</h2>
+                    <p class="text-sm text-gray-500 mt-1 flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        {{ rabbi_temple.address }}
+                    </p>
+                </div>
+                {% if rabbi_temple.get_absolute_url %}
+                    <a href="{{ rabbi_temple.get_absolute_url }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition">
+                        Voir la page publique
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Section Membres de la communauté -->
+        <div class="bg-white shadow rounded-lg p-6 border border-gray-100">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-gray-900">Membres rattachés ({{ temple_members|length }})</h3>
+            </div>
+
+            {% if temple_members %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom complet</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Téléphone</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Matricule</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for member in temple_members %}
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ member.user.full_name }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ member.user.phone }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                                        {{ member.matricule }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-sm text-gray-500 italic py-4">Aucun membre n'est encore rattaché à votre communauté pour le moment.</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-lg">
+            <p class="text-sm text-amber-700">Aucun temple ne vous est rattaché pour l'instant. Veuillez contacter l'administrateur de la plateforme.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

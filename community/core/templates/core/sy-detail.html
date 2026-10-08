@@ -1,0 +1,147 @@
+{% extends 'base.html' %} {% block content %}
+<div class="max-w-3xl mx-auto mt-10 px-4">
+  <!-- Bouton de retour -->
+  <div class="mb-6">
+    <a
+      href="{% url 'core:temple-list' %}"
+      class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 transition duration-150"
+    >
+      <svg
+        class="w-4 h-4 mr-1"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        ></path>
+      </svg>
+      Retour à la liste des temples
+    </a>
+  </div>
+
+  <!-- Carte principale du Temple -->
+  <div
+    class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 space-y-6"
+  >
+    <!-- En-tête : Nom du temple -->
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ temple.name }}</h1>
+      <p class="text-gray-600 flex items-center text-base">
+        <svg
+          class="w-5 h-5 mr-2 text-gray-400 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+          ></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+          ></path>
+        </svg>
+        {{ temple.address }}
+      </p>
+    </div>
+
+    <hr class="border-gray-100" />
+
+    <!-- Informations sur le Rabbin -->
+    <div>
+      <h3 class="text-lg font-semibold text-gray-700 mb-3">
+        Direction Spirituelle
+      </h3>
+      <div
+        class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex items-center space-x-4"
+      >
+        <div
+          class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg"
+        >
+          {{ temple.rabbin.user.full_name|slice:":1" }}
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Rabbin dirigeant</p>
+          <p class="text-base font-semibold text-gray-900">
+            {{ temple.rabbin.user.full_name }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section d'action : Rejoindre le temple -->
+    <div
+      class="pt-4 flex flex-col sm:flex-row gap-4 items-center justify-between border-t border-gray-100"
+    >
+      {% if request.user.is_authenticated %} {% if is_user_member %}
+      <!-- Cas 1 : Membre de ce temple -->
+      <p class="text-sm font-medium text-green-600 flex items-center">
+        <svg
+          class="w-5 h-5 mr-1.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
+        </svg>
+        Vous êtes membre de cette communauté
+      </p>
+      {% elif user_has_temple %}
+      <!-- Cas 2 : Membre d'une AUTRE communauté -->
+      <p class="text-sm font-medium text-amber-600 flex items-center">
+        <svg
+          class="w-5 h-5 mr-1.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          ></path>
+        </svg>
+        Vous appartenez déjà à une autre communauté.
+      </p>
+      {% else %}
+      <!-- Cas 3 : N'appartient à aucun temple, peut rejoindre -->
+      <p class="text-sm text-gray-600">
+        Vous souhaitez faire partie de cette communauté ?
+      </p>
+      <a
+        href="{% url 'core:join-community' %}?temple={{ temple.id }}"
+        class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-6 rounded-lg transition duration-200 shadow-sm text-center"
+      >
+        Rejoindre ce temple
+      </a>
+      {% endif %} {% else %}
+      <!-- Cas 4 : Non connecté -->
+      <p class="text-sm text-gray-600">
+        Connectez-vous pour rejoindre cette communauté.
+      </p>
+      <a
+        href="{% url 'accounts:login' %}?next={{ request.path }}"
+        class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-6 rounded-lg transition duration-200 shadow-sm text-center"
+      >
+        Se connecter
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

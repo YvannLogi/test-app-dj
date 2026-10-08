@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>website</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+      body {
+        font-family: "Arial", sans-serif;
+      }
+
+      @theme {
+        --color-blue: #0802fc;
+        --color-black: #222;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <header>
+        {% include "layout/_navbar.html" %}
+      </header>
+      <main>{% block content %} {% endblock %}</main>
+    </div>
+  </body>
+</html>

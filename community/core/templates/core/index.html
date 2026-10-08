@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="relative overflow-hidden bg-[#222] text-white">
+    <div class="max-w-7xl mx-auto px-6 py-20 md:py-28">
+
+        <div class="max-w-3xl">
+
+            <span class="inline-block mb-5 px-4 py-1.5 rounded-full
+                         bg-[#0802C] text-white text-sm font-medium">
+                Bienvenue dans notre communauté
+            </span>
+
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight">
+                Grandir ensemble,
+                <span class="text-[#0802C]">
+                    vivre ensemble.
+                </span>
+            </h1>
+
+            <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl leading-relaxed">
+                Découvrez nos communautés, participez à nos événements
+                et restez au cœur de la vie de nos temples.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-4">
+
+                <a
+                    href="{% url 'core:temple-list' %}"
+                    class="inline-flex items-center px-6 py-3
+                           rounded-lg bg-[#0802C] text-white
+                           font-semibold hover:opacity-90 transition"
+                >
+                    Découvrir nos temples
+                </a>
+
+                <a
+                    href="{% url 'core:event-list' %}"
+                    class="inline-flex items-center px-6 py-3
+                           rounded-lg border border-white/30
+                           text-white font-semibold
+                           hover:bg-white hover:text-[#222]
+                           transition"
+                >
+                    Voir les événements
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Décoration -->
+    <div class="absolute -right-32 -bottom-32
+                w-96 h-96 rounded-full
+                bg-[#0802C]/20 blur-3xl">
+    </div>
+</section>
+
+
+<!-- TEMPLES -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+
+    <div class="flex flex-col md:flex-row
+                md:items-end md:justify-between gap-4 mb-8">
+
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-wider
+                      text-[#0802C]">
+                Nos communautés
+            </p>
+
+            <h2 class="mt-2 text-3xl md:text-4xl font-bold text-[#222]">
+                Nos temples
+            </h2>
+
+            <p class="mt-3 text-gray-600 max-w-xl">
+                Découvrez les communautés proches de vous
+                et rejoignez celle qui vous correspond.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'core:temple-list' %}"
+            class="text-sm font-semibold text-[#0802C]
+                   hover:underline whitespace-nowrap"
+        >
+            Voir tous les temples →
+        </a>
+
+    </div>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {% for temple in temples %}
+
+            <article
+                class="group rounded-2xl border border-gray-200
+                       bg-white p-6
+                       hover:-translate-y-1 hover:shadow-xl
+                       transition duration-300"
+            >
+
+                <div class="w-12 h-12 rounded-xl
+                            bg-[#0802C]/10
+                            flex items-center justify-center
+                            text-[#0802C] text-xl font-bold">
+                    {{ temple.name|first }}
+                </div>
+
+                <h3 class="mt-5 text-xl font-bold text-[#222]">
+                    {{ temple.name }}
+                </h3>
+
+                <p class="mt-2 text-gray-500 text-sm">
+                    {{ temple.address }}
+                </p>
+
+                <a
+                    href="{% url 'core:temple-detail' temple.slug %}"
+                    class="inline-block mt-5
+                           text-sm font-semibold
+                           text-[#0802C]
+                           group-hover:underline"
+                >
+                    Découvrir →
+                </a>
+
+            </article>
+
+        {% empty %}
+
+            <p class="text-gray-500">
+                Aucun temple disponible pour le moment.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- ÉVÉNEMENTS -->
+<section class="bg-gray-50">
+
+    <div class="max-w-7xl mx-auto px-6 py-16">
+
+        <div class="flex flex-col md:flex-row
+                    md:items-end md:justify-between gap-4 mb-8">
+
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wider
+                          text-[#0802C]">
+                    La vie de la communauté
+                </p>
+
+                <h2 class="mt-2 text-3xl md:text-4xl font-bold text-[#222]">
+                    Les prochains événements
+                </h2>
+
+                <p class="mt-3 text-gray-600">
+                    Retrouvez les rencontres et événements à venir.
+                </p>
+            </div>
+
+            <a
+                href="{% url 'core:event-list' %}"
+                class="text-sm font-semibold text-[#0802C]
+                       hover:underline whitespace-nowrap"
+            >
+                Tous les événements →
+            </a>
+
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            {% for event in last_events %}
+
+                <article
+                    class="bg-white rounded-2xl
+                           border border-gray-200
+                           overflow-hidden
+                           hover:shadow-xl
+                           transition"
+                >
+
+                    <div class="bg-[#222] text-white p-5">
+
+                        <p class="text-[#0802C] font-bold text-sm">
+                            {{ event.date|date:"d M Y" }}
+                        </p>
+
+                        <p class="text-gray-300 text-sm mt-1">
+                            {{ event.date|date:"H:i" }}
+                        </p>
+
+                    </div>
+
+                    <div class="p-6">
+
+                        <span class="text-xs font-semibold
+                                     uppercase tracking-wide
+                                     text-[#0802C]">
+                            {{ event.event_type__name }}
+                        </span>
+
+                        <h3 class="mt-2 text-xl font-bold text-[#222]">
+                            {{ event.title }}
+                        </h3>
+
+                        <a
+                            href="{% url 'core:event-list' %}"
+                            class="inline-block mt-5
+                                   text-sm font-semibold
+                                   text-[#0802C]
+                                   hover:underline"
+                        >
+                            En savoir plus →
+                        </a>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <p class="text-gray-500">
+                    Aucun événement à venir.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- BLOG -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+
+    <div class="flex flex-col md:flex-row
+                md:items-end md:justify-between gap-4 mb-8">
+
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-wider
+                      text-[#0802C]">
+                Actualités
+            </p>
+
+            <h2 class="mt-2 text-3xl md:text-4xl font-bold text-[#222]">
+                Derniers articles
+            </h2>
+
+            <p class="mt-3 text-gray-600">
+                Découvrez les dernières nouvelles de nos communautés.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'core:blog-list' %}"
+            class="text-sm font-semibold text-[#0802C]
+                   hover:underline whitespace-nowrap"
+        >
+            Toutes les actualités →
+        </a>
+
+    </div>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {% for blog in blogs %}
+
+            <article
+                class="group border-b-2 border-gray-200
+                       pb-6 hover:border-[#0802C]
+                       transition"
+            >
+
+                <span class="text-xs font-semibold uppercase
+                             tracking-wider text-[#0802C]">
+                    {{ blog.category__name }}
+                </span>
+
+                <h3
+                    class="mt-3 text-xl font-bold text-[#222]
+                           group-hover:text-[#0802C]
+                           transition"
+                >
+                    {{ blog.title }}
+                </h3>
+
+                <p class="mt-3 text-sm text-gray-500">
+                    {{ blog.created_at|date:"d F Y" }}
+                </p>
+
+                <a
+                    href="{{ blog.get_absolute_url }}"
+                    class="inline-block mt-5
+                           text-sm font-semibold text-[#222]
+                           group-hover:text-[#0802C]"
+                >
+                    Lire l'article →
+                </a>
+
+            </article>
+
+        {% empty %}
+
+            <p class="text-gray-500">
+                Aucun article disponible.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="bg-[#0802C] text-white">
+
+    <div class="max-w-7xl mx-auto px-6 py-16 text-center">
+
+        <h2 class="text-3xl md:text-4xl font-bold">
+            Une communauté vous attend
+        </h2>
+
+        <p class="mt-4 text-white/80 max-w-2xl mx-auto">
+            Découvrez nos temples, participez à la vie de la communauté
+            et faites le premier pas.
+        </p>
+
+        <a
+            href="{% url 'core:join-community' %}"
+            class="inline-flex mt-8 px-6 py-3
+                   bg-[#222] text-white
+                   rounded-lg font-semibold
+                   hover:bg-white hover:text-[#222]
+                   transition"
+        >
+            Trouver une communauté
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

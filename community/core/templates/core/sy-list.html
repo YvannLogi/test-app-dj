@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10 px-4">
+    <!-- En-tête de la page -->
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">Liste des Temples</h2>
+        <!-- Optionnel : Un bouton pour faire une demande d'adhésion si besoin -->
+        <a href="{% url 'core:join-community' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 shadow-sm text-sm">
+            Rejoindre un temple
+        </a>
+    </div>
+
+    <!-- Grille des temples -->
+    {% if temples %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for temple in temples %}
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition duration-200">
+                    <div>
+                        <!-- Nom du Temple -->
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">
+                            {{ temple.name }}
+                        </h3>
+
+                        <!-- Adresse -->
+                        <p class="text-gray-600 text-sm mb-3 flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            {{ temple.address }}
+                        </p>
+
+                        <!-- Rabbin dirigeant -->
+                        <p class="text-gray-700 text-sm mb-4 font-medium">
+                            Rabbin : <span class="text-gray-900 font-semibold">{{ temple.rabbin.user.full_name }}</span>
+                        </p>
+                    </div>
+
+                    <!-- Lien vers le détail -->
+                    <div class="pt-4 border-t border-gray-100 flex justify-end">
+                        <a href="{{ temple.get_absolute_url }}" 
+                           class="text-indigo-600 hover:text-indigo-800 font-medium text-sm flex items-center transition duration-150">
+                            Voir les détails
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center text-gray-500">
+            Aucun temple n'est disponible pour le moment.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
